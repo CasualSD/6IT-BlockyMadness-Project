@@ -25,6 +25,7 @@ public class WallRun : MonoBehaviour
 
     [SerializeField] LayerMask wallCeck;
 
+    public WallStamina ws;
 
     private bool readyToWallJump = true;
     private float wallJumpCooldown = 1.2f;
@@ -67,11 +68,13 @@ public class WallRun : MonoBehaviour
             if (wallLeft)
             {
                 StartWallRun();
+                ws.UseStamina(1);
                 isWalled = true;
             }
             else if (wallRight)
             {
                 StartWallRun();
+                ws.UseStamina(1);
                 isWalled = true;
             }
             else
@@ -101,7 +104,7 @@ public class WallRun : MonoBehaviour
             tilt = Mathf.Lerp(tilt, camTilt, camTiltTime * Time.deltaTime);
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && readyToWallJump)
+        if (Input.GetKeyDown(KeyCode.Space) && readyToWallJump || ws.currentStamina <= 0)
         {
             readyToWallJump = false;
             if (wallLeft)
@@ -125,7 +128,7 @@ public class WallRun : MonoBehaviour
         readyToWallJump = true;
     }
 
-    void StopWallRun()
+    public void StopWallRun()
     {
         rb.useGravity = true;
 
